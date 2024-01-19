@@ -1,0 +1,36 @@
+[
+  {
+    "name": "Kakashi",
+    "clan": "Hatake",
+    "rank": "Jonin",
+    "photo": "../img/Kakashi-Hatake-naruto-adult-paint-by-numbers.jpg"
+  },
+  {
+    "name": "Naruto",
+    "clan": "Uzumaki",
+    "rank": "Jonin",
+    "photo": "../img/Naruto-730x535.jpeg"
+
+  },
+  {
+    "name": "Sasuke",
+    "clan": "Uchiha",
+    "rank": "Genin",
+    "photo": "../img/df1innp-812c3dbd-588e-419b-9f21-abd61895169c.jpg"
+
+  },
+  {
+    "name": "Sakura",
+    "clan": "Haruno",
+    "rank": "jonin",
+    "photo": "../img/xdjdb3p457971.jpg"
+
+  },
+  {
+    "name": "Sai",
+    "clan": "Yamanaka",
+    "rank": "Anbu",
+    "photo": "../img/cc3e1c8d33829608d4b6f200e54bb900.jpg"
+
+  }
+]
