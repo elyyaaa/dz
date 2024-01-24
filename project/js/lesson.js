@@ -69,7 +69,109 @@ tabParents.onclick = (event) => {
     }
 };
 
+// converter
 
+const somInput = document.querySelector("#som");
+const usdInput = document.querySelector("#usd");
+const eurInput = document.querySelector("#eur");
+
+// somInput.addEventListener("input",()=>{
+
+//
+//     request.addEventListener("load",()=>{
+//         const data = JSON.parse(request.response)
+//         somInput.value = (usdInput.value * data.usd).toFixed(2)
+//     })
+// })
+
+// const converter = (element,targetElement,currentValue) =>{
+//     element.oninput = () =>{
+//
+//         const request = new XMLHttpRequest()
+//         request.open("GET","../converter.json")
+//         request.setRequestHeader("Content-type","application/json")
+//         request.send()
+//         request.onload = () =>{
+//             const data = JSON.parse(request.response)
+//             switch (currentValue){
+//                 case "som":
+//                     targetElement.value = (element.value / data.usd).toFixed(2)
+//                     break
+//                 case "usd":
+//                     targetElement.value = (element.value * data.usd).toFixed(2)
+//                     break
+//                 case "eur":
+//                     targetElement.value = (element.value * data.eur).toFixed(2)
+//                     targetElement.value = (element.value / data.usd).toFixed(2)
+//                     break
+//                 default:
+//                     break
+//             }
+//             // element.value === "" ? targetElement.value = ""
+//             element.value === "" && (targetElement.value = "")
+//
+//         }
+//     }
+// }
+// converter(somInput,usdInput,"som")
+// converter(usdInput,eurInput,somInput,"usd","eur")
+// converter(somInput,eurInput,"eur")
+const converter = (element, targetElement, currentValue, targetCurrency) => {
+    element.oninput = () => {
+        const request = new XMLHttpRequest();
+        request.open("GET", "../converter.json");
+        request.setRequestHeader("Content-type", "application/json");
+        request.send();
+        request.onload = () => {
+            const data = JSON.parse(request.response);
+            let result;
+
+            switch (currentValue) {
+                case "som":
+                    result = element.value * data.som;
+                    break;
+                case "usd":
+                    result = element.value * data.usd;
+                    break;
+                case "eur":
+                    result = element.value * data.eur;
+                    break;
+                default:
+                    break;
+            }
+
+            switch (targetCurrency) {
+                case "som":
+                    targetElement.value = (result / data.som).toFixed(2);
+                    break;
+                case "usd":
+                    targetElement.value = (result / data.usd).toFixed(2);
+                    break;
+                case "eur":
+                    targetElement.value = (result / data.eur).toFixed(2);
+                    break;
+                default:
+                    break;
+            }
+            element.value === "" && (targetElement.value = "");
+        };
+    };
+};
+
+converter(somInput, usdInput, "som", "usd");
+converter(somInput, eurInput, "som", "eur");
+
+converter(usdInput, somInput, "usd", "som");
+converter(usdInput, eurInput, "usd", "eur");
+
+converter(eurInput, somInput, "eur", "som");
+converter(eurInput, usdInput, "eur", "usd");
+
+
+
+// DRY - don't repeat yourself
+// KISS - keep it simple,stupid
+// SOLID - подходы
 
 
 
