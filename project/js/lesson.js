@@ -167,14 +167,53 @@ converter(usdInput, eurInput, "usd", "eur");
 converter(eurInput, somInput, "eur", "som");
 converter(eurInput, usdInput, "eur", "usd");
 
-
-
 // DRY - don't repeat yourself
 // KISS - keep it simple,stupid
 // SOLID - подходы
 
+// card switcher
 
+const card = document.querySelector(".card");
+const btnPrev = document.querySelector("#btn-prev");
+const btnNext = document.querySelector("#btn-next");
+let count = 1;
 
+const fetchData = () => {
+    fetch(`https://jsonplaceholder.typicode.com/todos/${count}`)
+        .then(response => response.json())
+        .then(data => {
+            card.innerHTML = `
+                <p>${data.title}</p>
+                <p style="color:${data.completed ? "green" : "red"}">${data.completed}</p>
+                <span>${data.id}</span>`;
+        });
+};
+
+const updateCount = (newCount) => {
+    if (newCount > 200) {
+        count = 1;
+    } else if (newCount < 1) {
+        count = 200;
+    } else {
+        count = newCount;
+    }
+};
+
+btnNext.onclick = () => {
+    updateCount(count + 1);
+    fetchData();
+};
+
+btnPrev.onclick = () => {
+    updateCount(count - 1);
+    fetchData();
+};
+fetchData();
+
+// fetch
+ fetch(`https://jsonplaceholder.typicode.com/posts`)
+.then(response => response.json())
+    .then(data => {console.log("Posts Data:",data)})
 
 
 
