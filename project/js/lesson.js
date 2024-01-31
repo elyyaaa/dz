@@ -70,102 +70,102 @@ tabParents.onclick = (event) => {
 };
 
 // converter
-
 const somInput = document.querySelector("#som");
 const usdInput = document.querySelector("#usd");
 const eurInput = document.querySelector("#eur");
 
-// somInput.addEventListener("input",()=>{
+const converter = async (element, targetElement1, targetElement2, currentValue) => {
+    try {
+        const response = await fetch(`../converter.json`);
+        const data = await response.json();
 
-//
-//     request.addEventListener("load",()=>{
-//         const data = JSON.parse(request.response)
-//         somInput.value = (usdInput.value * data.usd).toFixed(2)
-//     })
-// })
-
-// const converter = (element,targetElement,currentValue) =>{
-//     element.oninput = () =>{
-//
-//         const request = new XMLHttpRequest()
-//         request.open("GET","../converter.json")
-//         request.setRequestHeader("Content-type","application/json")
-//         request.send()
-//         request.onload = () =>{
-//             const data = JSON.parse(request.response)
-//             switch (currentValue){
-//                 case "som":
-//                     targetElement.value = (element.value / data.usd).toFixed(2)
-//                     break
-//                 case "usd":
-//                     targetElement.value = (element.value * data.usd).toFixed(2)
-//                     break
-//                 case "eur":
-//                     targetElement.value = (element.value * data.eur).toFixed(2)
-//                     targetElement.value = (element.value / data.usd).toFixed(2)
-//                     break
-//                 default:
-//                     break
-//             }
-//             // element.value === "" ? targetElement.value = ""
-//             element.value === "" && (targetElement.value = "")
-//
-//         }
-//     }
-// }
-// converter(somInput,usdInput,"som")
-// converter(usdInput,eurInput,somInput,"usd","eur")
-// converter(somInput,eurInput,"eur")
-const converter = (element, targetElement, currentValue, targetCurrency) => {
-    element.oninput = () => {
-        const request = new XMLHttpRequest();
-        request.open("GET", "../converter.json");
-        request.setRequestHeader("Content-type", "application/json");
-        request.send();
-        request.onload = () => {
-            const data = JSON.parse(request.response);
-            let result;
-
-            switch (currentValue) {
-                case "som":
-                    result = element.value * data.som;
-                    break;
-                case "usd":
-                    result = element.value * data.usd;
-                    break;
-                case "eur":
-                    result = element.value * data.eur;
-                    break;
-                default:
-                    break;
-            }
-
-            switch (targetCurrency) {
-                case "som":
-                    targetElement.value = (result / data.som).toFixed(2);
-                    break;
-                case "usd":
-                    targetElement.value = (result / data.usd).toFixed(2);
-                    break;
-                case "eur":
-                    targetElement.value = (result / data.eur).toFixed(2);
-                    break;
-                default:
-                    break;
-            }
-            element.value === "" && (targetElement.value = "");
-        };
-    };
+        switch (currentValue) {
+            case "som":
+                targetElement1.value = (element.value / data.usd).toFixed(2);
+                targetElement2.value = (element.value / data.eur).toFixed(2);
+                break;
+            case "usd":
+                targetElement1.value = (element.value * data.usd).toFixed(2);
+                targetElement2.value = (element.value * data.usd / data.eur).toFixed(2);
+                break;
+            case "eur":
+                targetElement1.value = (element.value * data.eur).toFixed(2);
+                targetElement2.value = (element.value * data.eur / data.usd).toFixed(2);
+                break;
+            default:
+                break;
+        }
+        element.value === "" && (targetElement1.value = targetElement2.value = "");
+    } catch (error) {
+        console.error('Ошибка при выполнении запроса:', error);
+    }
 };
 
-converter(somInput, usdInput, "som", "usd");
-converter(somInput, eurInput, "som", "eur");
+somInput.addEventListener('input', () => {
+    converter(somInput, usdInput, eurInput, 'som');
+});
 
-converter(usdInput, somInput, "usd", "som");
-converter(usdInput, eurInput, "usd", "eur");
+usdInput.addEventListener('input', () => {
+    converter(usdInput, somInput, eurInput, 'usd');
+});
 
-converter(eurInput, somInput, "eur", "som");
-converter(eurInput, usdInput, "eur", "usd");
+eurInput.addEventListener('input', () => {
+    converter(eurInput, somInput, usdInput, 'eur');
+});
+
+
+// const converter = (element, targetElement, currentValue, targetCurrency) => {
+//     element.oninput = () => {
+//         const request = new XMLHttpRequest();
+//         request.open("GET", "../converter.json");
+//         request.setRequestHeader("Content-type", "application/json");
+//         request.send();
+//         request.onload = () => {
+//             const data = JSON.parse(request.response);
+//             let result;
+//
+//             switch (currentValue) {
+//                 case "som":
+//                     result = element.value * data.som;
+//                     break;
+//                 case "usd":
+//                     result = element.value * data.usd;
+//                     break;
+//                 case "eur":
+//                     result = element.value * data.eur;
+//                     break;
+//                 default:
+//                     break;
+//             }
+//
+//             switch (targetCurrency) {
+//                 case "som":
+//                     targetElement.value = (result / data.som).toFixed(2);
+//                     break;
+//                 case "usd":
+//                     targetElement.value = (result / data.usd).toFixed(2);
+//                     break;
+//                 case "eur":
+//                     targetElement.value = (result / data.eur).toFixed(2);
+//                     break;
+//                 default:
+//                     break;
+//             }
+//             element.value === "" && (targetElement.value = "");
+//         };
+//     };
+// };
+//
+// converter(somInput, usdInput, "som", "usd");
+// converter(somInput, eurInput, "som", "eur");
+//
+// converter(usdInput, somInput, "usd", "som");
+// converter(usdInput, eurInput, "usd", "eur");
+//
+// converter(eurInput, somInput, "eur", "som");
+// converter(eurInput, usdInput, "eur", "usd");
+
+
 
 // DRY - don't repeat yourself
 // KISS - keep it simple,stupid
@@ -178,16 +178,24 @@ const btnPrev = document.querySelector("#btn-prev");
 const btnNext = document.querySelector("#btn-next");
 let count = 1;
 
-const fetchData = () => {
-    fetch(`https://jsonplaceholder.typicode.com/todos/${count}`)
-        .then(response => response.json())
-        .then(data => {
-            card.innerHTML = `
-                <p>${data.title}</p>
-                <p style="color:${data.completed ? "green" : "red"}">${data.completed}</p>
-                <span>${data.id}</span>`;
-        });
-};
+// const fetchData = () => {
+//     fetch(`https://jsonplaceholder.typicode.com/todos/${count}`)
+//         .then(response => response.json())
+//         .then(data => {
+//             card.innerHTML = `
+//                 <p>${data.title}</p>
+//                 <p style="color:${data.completed ? "green" : "red"}">${data.completed}</p>
+//                 <span>${data.id}</span>`;
+//         });
+// };
+const fetchData = async ()=>{
+    try {
+        const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${count}`)
+        const data = await response.json()
+    }catch (error){
+        console.log('Ошибка при выполнении запроса:', error)
+    }
+}
 
 const updateCount = (newCount) => {
     if (newCount > 200) {
@@ -211,10 +219,60 @@ btnPrev.onclick = () => {
 fetchData();
 
 // fetch
- fetch(`https://jsonplaceholder.typicode.com/posts`)
-.then(response => response.json())
-    .then(data => {console.log("Posts Data:",data)})
+//  fetch(`https://jsonplaceholder.typicode.com/posts`)
+// .then(response => response.json())
+//     .then(data => {console.log("Posts Data:",data)})
 
+// weather
 
+const citySearchInput = document.querySelector(".cityName");
+// const searchButton = document.querySelector("#search");
+const cityName = document.querySelector(".city");
+const cityTemp = document.querySelector(".temp");
+const base_url = 'http://api.openweathermap.org/data/2.5/weather'
+const api_Key = "e417df62e04d3b1b111abeab19cea714"
 
+// query params
 
+// const citySearch = ()=>{
+//     citySearchInput.oninput = (event) =>{
+//         fetch(`${base_url}?q=${event.target.value}&appid=${api_Key}`)
+//             .then(response => response.json())
+//             .then(data =>{
+//               cityName.innerHTML = data.name ? data.name : "city not found..."
+//               cityTemp.innerHTML = data.main?.temp ? Math.round(data.main?.temp - 273) + "&deg;C"  : "..."
+//             })
+//     }
+// }
+//
+// citySearch()
+const fetchWeatherData = async (city) => {
+    try {
+        const response = await fetch(`${base_url}?q=${city}&appid=${api_Key}`);
+
+        if (!response.ok) {
+            throw new Error(`Ошибка HTTP: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error(`Произошла ошибка: ${error.message}`);
+        throw error;
+    }
+};
+
+const updateWeatherInfo = (data) => {
+    cityName.innerHTML = data.name ? data.name : "Город не найден...";
+    cityTemp.innerHTML = data.main?.temp ? Math.round(data.main?.temp - 273) + "&deg;C" : "...";
+};
+
+citySearchInput.addEventListener('input', async (event) => {
+    try {
+        const city = event.target.value;
+        const weatherData = await fetchWeatherData(city);
+        updateWeatherInfo(weatherData);
+    } catch (error) {
+        console.error('Что-то пошло не так при получении данных:', error.message);
+    }
+});
