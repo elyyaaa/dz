@@ -20,7 +20,7 @@ body {
     font-size: 20px;
     cursor: pointer;
     border: 1px solid var(--orange);
-    background: black;
+    background: #deb8b8;
     color: var(--orange);
     border-radius: 8px;
 }
@@ -91,7 +91,7 @@ input {
     font-size: 20px;
     padding-left: 5px;
     color: var(--orange);
-    background: black;
+    background: #deb8b8;
     border: 2px solid var(--orange);
 }
 

@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const image = document.createElement('img');
             image.src = 'https://ww2.doramasmp4.city/wp-content/uploads/2023/11/xBnscv5BrJREKVSvh0le61y4KDk.jpg';
             image.alt = 'Card Image';
-            image.style.maxWidth = '100%'; // Добавленный стиль
+            image.style.maxWidth = '100%'; 
 
             const title = document.createElement('h3');
             title.textContent = post.title;
